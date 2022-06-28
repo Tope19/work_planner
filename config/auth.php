@@ -41,18 +41,8 @@ return [
             'provider' => 'users',
         ],
 
-        'user' => [
-            'driver' => 'session',
-            'provider' => 'user',
-        ],
-
-        'admin' => [
-            'driver' => 'session',
-            'provider' => 'admin',
-        ],
-
         'api' => [
-            'driver' => 'passport',
+            'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
         ],
@@ -80,16 +70,6 @@ return [
             'driver' => 'eloquent',
             'model' => App\User::class,
         ],
-
-        'user' => [
-            'driver' => 'eloquent',
-            'model' => Store\App\Models\Customer::class,
-        ],
-
-        // 'admin' => [
-        //     'driver' => 'eloquent',
-        //     'model' => africa\App\Models\Admins::class,
-        // ],
 
         // 'users' => [
         //     'driver' => 'database',

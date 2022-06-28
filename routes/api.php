@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,10 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-})->middleware('cors');
+});
 
-// Route::middleware('cors')->post('login', [ 'as' => 'login', 'uses' => 'AuthApi\AuthenticationController@login']);
-
+Route::prefix('v1')->group(function () {
+    Route::get('/workers', 'WorkerController@index');
+    Route::get('/workers/{id}', 'WorkerController@show');
+    Route::post('/workers', 'WorkerController@store');
+});

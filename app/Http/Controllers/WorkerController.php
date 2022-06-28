@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\WorkerService;
-use App\utils\ApiCustomResponse;
+use App\Helpers\ApiCustomResponse;
+use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
 use App\Http\Requests\WorkerRequest;
 use App\Http\Resources\WorkerResource;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,20 +26,14 @@ class WorkerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $workers = $this->workerService->getAll();
-        $message = 'Workers retrieved successfully';
-        return ApiCustomResponse::successResponse($message, WorkerResource::collection($workers), Response::HTTP_OK);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    {  try {
+            $workers = $this->workerService->getAll();
+            $message = 'Workers retrieved successfully';
+            return ApiCustomResponse::successResponse($message, WorkerResource::collection($workers), Response::HTTP_OK);
+        } catch (\Exception $e) {
+            $message = 'Something went wrong while processing your request.';
+            return ApiCustomResponse::errorResponse($message, Response::HTTP_INTERNAL_SERVER_ERROR, $e);
+        }
     }
 
     /**
@@ -46,58 +42,45 @@ class WorkerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(WorkerRequest $request)
     {
+        DB::beginTransaction();
         try {
-            $worker = $this->workerRepository->create($data);
-
+            $worker = $this->workerService->create($request->all());
+            $message = "Worker created successfully!";
+            DB::commit();
+            return ApiCustomResponse::successResponse($message, new WorkerResource($worker), Response::HTTP_CREATED);
+        } catch (InvalidArgumentException $e) {
+            DB::rollback();
+            $message = $e->getMessage();
+            return ApiCustomResponse::errorResponse($message, Response::HTTP_UNPROCESSABLE_ENTITY, $e);
         } catch (\Exception $e) {
-
+            DB::rollback();
+            $message = 'Something went wrong while processing your request.';
+            return ApiCustomResponse::errorResponse($message, Response::HTTP_INTERNAL_SERVER_ERROR, $e);
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Worker  $worker
+     * @param int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Worker $worker)
+    public function show($id)
     {
-        //
+        try {
+            $worker = $this->workerService->getById($id);
+            if(!$worker) {
+                $message = 'Worker not found';
+                return ApiCustomResponse::errorResponse($message, Response::HTTP_OK);
+            }
+            $message = 'Worker retrieved successfully';
+            return ApiCustomResponse::successResponse($message, new WorkerResource($worker), Response::HTTP_OK);
+        } catch (\Exception $e) {
+            $message = 'Something went wrong while processing your request.';
+            return ApiCustomResponse::errorResponse($message, Response::HTTP_INTERNAL_SERVER_ERROR, $e);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Worker  $worker
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Worker $worker)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Worker  $worker
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Worker $worker)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Worker  $worker
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Worker $worker)
-    {
-        //
-    }
 }

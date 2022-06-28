@@ -1,5 +1,5 @@
 <?php
-namespace App\utils;
+namespace App\Helpers;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use Exception;

@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Carbon\Carbon;
-use App\Http\Resources\PostResource;
 use App\Repositories\WorkerRepository;
 
 class WorkerService
@@ -25,36 +24,15 @@ class WorkerService
 
     public  function getAll()
     {
-        try {
-            $posts = $this->workerRepository->getAll();
-            return response()->json([
-                'data' => PostResource::collection($posts),
-                'message' => 'Successfully retrieved posts',
-                'status' => 200
-            ], 200);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        $workers = $this->workerRepository->getAll();
+        return $workers;
 
     }
 
     public function getById($id)
     {
-        try {
-            $post = $this->workerRepository->getById($id);
-            return response()->json([
-                'data' => new PostResource($post),
-                'message' => 'Retrieved Single Post',
-                'status' => 200
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        $worker = $this->workerRepository->getById($id);
+        return $worker;
     }
 
 }
