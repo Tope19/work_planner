@@ -19,7 +19,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function () {
-    Route::get('/workers', 'WorkerController@index');
-    Route::get('/workers/{id}', 'WorkerController@show');
-    Route::post('/workers', 'WorkerController@store');
+    Route::prefix('workers')->group(function () {
+        Route::get('/', 'WorkerController@index');
+        Route::get('/{id}', 'WorkerController@show');
+        Route::post('/', 'WorkerController@store');
+    });
+
+    Route::prefix('timetables')->group(function () {
+        Route::get('/', 'TimestableController@index');
+        Route::get('/{id}', 'TimestableController@show');
+        Route::post('/', 'TimestableController@store');
+    });
+
+
 });

@@ -13,7 +13,7 @@ class TimestableRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class TimestableRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+        //    'start_time' => 'required|date_format:H:i|after:08:00|before:20:00',
+        //    'end_time' => 'required|date_format:H:i|after:08:00|before:20:00|after:start_time',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
         ];
     }
 }
