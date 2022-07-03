@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Models\Timestable;
+use App\Models\Timetable;
 
-class TimestableRepository
+class TimetableRepository
 {
     protected $time;
 
-    public function __construct(Timestable $time)
+    public function __construct(Timetable $time)
     {
         $this->time = $time;
     }

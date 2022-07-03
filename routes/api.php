@@ -26,9 +26,15 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('timetables')->group(function () {
-        Route::get('/', 'TimestableController@index');
-        Route::get('/{id}', 'TimestableController@show');
-        Route::post('/', 'TimestableController@store');
+        Route::get('/', 'TimetableController@index');
+        Route::get('/{id}', 'TimetableController@show');
+        Route::post('/', 'TimetableController@store');
+    });
+
+    Route::prefix('shifts')->group(function () {
+        Route::get('/', 'ShiftController@index');
+        Route::get('/{id}', 'ShiftController@show');
+        Route::post('/', 'ShiftController@store');
     });
 
 

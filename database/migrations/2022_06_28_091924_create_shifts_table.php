@@ -16,9 +16,9 @@ class CreateShiftsTable extends Migration
         Schema::create('shifts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('worker_id');
-            $table->unsignedBigInteger('timestable_id');
+            $table->unsignedBigInteger('timetable_id');
             $table->foreign('worker_id')->references('id')->on('workers');
-            $table->foreign('timestable_id')->references('id')->on('timestables');
+            $table->foreign('timetable_id')->references('id')->on('timetables');
             $table->timestamps();
         });
     }

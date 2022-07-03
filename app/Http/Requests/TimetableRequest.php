@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class WorkerRequest extends FormRequest
+class TimetableRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,8 @@ class WorkerRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:workers',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
         ];
     }
 
@@ -35,11 +36,11 @@ class WorkerRequest extends FormRequest
             'name.required' => 'The name is required',
             'name.string' => 'The name must be a string',
             'name.max' => 'The name must be less than 255 characters',
-            'email.required' => 'The email is required',
-            'email.string' => 'The email must be a string',
-            'email.email' => 'The email must be a valid email address',
-            'email.max' => 'The email must be less than 255 characters',
-            'email.unique' => 'The email must be unique',
+            'start_time.required' => 'The start time is required',
+            'start_time.date_format' => 'The start time must be in the format HH:mm',
+            'end_time.required' => 'The end time is required',
+            'end_time.date_format' => 'The end time must be in the format HH:mm',
+            'end_time.after' => 'The end time must be after the start time',
         ];
     }
 }

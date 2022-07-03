@@ -3,6 +3,7 @@ namespace App\Helpers;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Validation\ValidationException;
 
 class ApiCustomResponse
 {
@@ -20,6 +21,23 @@ class ApiCustomResponse
 
         ];
         return response()->json($body, $code);
+    }
+
+    /** Return error api response */
+    static function inputErrorResponse(string $message = null, int $status_code = null, Request $request = null, ValidationException $trace = null)
+    {
+        $code = ($status_code != null) ? $status_code : '';
+        $traceMsg = empty($trace) ?  null  : $trace->getMessage();
+        $traceTrace = empty($trace) ?  null  : $trace->getTrace();
+
+        $body = [
+            'msg' => $message,
+            'code' => $code,
+            'success' => false,
+            'errors' => empty($trace) ?  null  : $trace->errors(),
+        ];
+
+        return response()->json($body)->setStatusCode($code);
     }
 
     public static function errorResponse(string $message = null, int $status_code, Exception $trace = null)

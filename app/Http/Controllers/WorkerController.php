@@ -46,7 +46,8 @@ class WorkerController extends Controller
     {
         DB::beginTransaction();
         try {
-            $worker = $this->workerService->create($request->all());
+            $data = $request->validated();
+            $worker = $this->workerService->create($data);
             $message = "Worker created successfully!";
             DB::commit();
             return ApiCustomResponse::successResponse($message, new WorkerResource($worker), Response::HTTP_CREATED);

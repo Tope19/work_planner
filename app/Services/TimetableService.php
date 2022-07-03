@@ -3,13 +3,13 @@
 namespace App\Services;
 
 use Carbon\Carbon;
-use App\Repositories\TimestableRepository;
+use App\Repositories\TimetableRepository;
 
-class TimestableService
+class TimetableService
 {
     protected $timeRepository;
 
-    public function __construct(TimestableRepository $timeRepository)
+    public function __construct(TimetableRepository $timeRepository)
     {
         $this->timeRepository = $timeRepository;
     }
