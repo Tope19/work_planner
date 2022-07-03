@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use InvalidArgumentException;
 use App\Services\WorkerService;
 use App\Helpers\ApiCustomResponse;
 use Illuminate\Support\Facades\DB;
-use InvalidArgumentException;
 use App\Http\Requests\WorkerRequest;
 use App\Http\Resources\WorkerResource;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 class WorkerController extends Controller
@@ -51,10 +52,10 @@ class WorkerController extends Controller
             $message = "Worker created successfully!";
             DB::commit();
             return ApiCustomResponse::successResponse($message, new WorkerResource($worker), Response::HTTP_CREATED);
-        } catch (InvalidArgumentException $e) {
+        } catch (ValidationException $e) {
             DB::rollback();
-            $message = $e->getMessage();
-            return ApiCustomResponse::errorResponse($message, Response::HTTP_UNPROCESSABLE_ENTITY, $e);
+            $message = "The given data was invalid.";
+            return inputErrorResponse::errorResponse($message, Response::HTTP_UNPROCESSABLE_ENTITY, $request, $e);
         } catch (\Exception $e) {
             DB::rollback();
             $message = 'Something went wrong while processing your request.';

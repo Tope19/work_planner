@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\TimetableService;
-use App\Helpers\ApiCustomResponse;
-use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
+use App\Helpers\ApiCustomResponse;
+use App\Services\TimetableService;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\TimetableRequest;
 use App\Http\Resources\TimetableResource;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 class TimetableController extends Controller
@@ -52,10 +53,10 @@ class TimetableController extends Controller
             $message = "Timetable created successfully!";
             DB::commit();
             return ApiCustomResponse::successResponse($message, new TimetableResource($time), Response::HTTP_CREATED);
-        } catch (InvalidArgumentException $e) {
+        } catch (ValidationException $e) {
             DB::rollback();
-            $message = $e->getMessage();
-            return ApiCustomResponse::errorResponse($message, Response::HTTP_UNPROCESSABLE_ENTITY, $e);
+            $message = "The given data was invalid.";
+            return inputErrorResponse::errorResponse($message, Response::HTTP_UNPROCESSABLE_ENTITY, $request, $e);
         } catch (\Exception $e) {
             DB::rollback();
             $message = 'Something went wrong while processing your request.';
