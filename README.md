@@ -10,13 +10,18 @@
 </ul>
 </p>
 
-1. clone the repo `git clone https://github.com/Tope19/news_board_api.git`
-2. cd into the project root folder
-3. To install the dependencies run `composer install`
-5. Run the server `php artisan serve`
-6. Migrate the database `php artisan migrate`
-7. To run the Unit Test for single class `vendor/bin/phpunit tests/Unit/${className}Test.php`
-8. To run the Unit Test for all classes `vendor/bin/phpunit tests/Unit`
+
+<p>Procedure:
+<ol>
+<li>Clone the repo `git clone https://github.com/Tope19/news_board_api.git`</li>
+<li>Cd into the project root folder. </li>
+<li>To install the dependencies run `composer install`. </li>
+<li>Run the server `php artisan serve`</li>
+<li>Migrate the database `php artisan migrate`. </li>
+<li>To run the Unit Test for single class `vendor/bin/phpunit tests/Unit/${className}Test.php`. </li>
+<li>To run the Unit Test for all classes `vendor/bin/phpunit tests/Unit`. </li>
+</ol>
+</p>
 
 
 Postman Documentation Link: https://documenter.getpostman.com/view/10180177/UzJFuxvL
