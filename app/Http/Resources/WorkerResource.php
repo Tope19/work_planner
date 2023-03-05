@@ -18,7 +18,7 @@ class WorkerResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'shifts' => $this->shifts()->first() ?? null,
+            'shifts' => $this->shifts()->first() ?? [],
         ];
 
     }

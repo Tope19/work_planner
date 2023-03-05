@@ -16,8 +16,8 @@ class ShiftResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'worker_id' => $this->workers()->first(),
-            'timetable_id' => $this->timetables()->first(),
+            'worker_id' => $this->workers()->first() ?? [],
+            'timetable_id' => $this->timetables()->first() ?? [],
         ];
     }
 }
